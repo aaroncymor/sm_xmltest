@@ -257,6 +257,10 @@ if __name__ == "__main__":
         print(file.name)
         print(file.location)
 
+    print(product.category.category_attr.id)
+    print(product.category.category_attr.is_adult)
+    print(product.category.text)
+
 
 
 #language_details(language_list)

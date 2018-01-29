@@ -35,7 +35,6 @@ def get_medias(media_list):
                     media['@mimeType'],
                     media['@width'],
                     media['@height'],
-                    media['name'],
                     media['location'],
                     media['name']
                 )
@@ -67,13 +66,11 @@ def get_medias(media_list):
     #        ctr += 1
     except TypeError as e:
         # media_list contains only one element
-
         media_obj = Media(
                 media_list['@contentType'],
                 media_list['@mimeType'],
                 media_list['@width'],
                 media_list['@height'],
-                media_list['name'],
                 media_list['location'],
                 media_list['name']
             )

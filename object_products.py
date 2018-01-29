@@ -10,7 +10,7 @@ class Territory:
     def __get_territory_attr(self, code, name):
         """
         """
-        price_territory_attr = namedtuple("territory_attr", ["code", "name"])
+        territory_attr = namedtuple("territory_attr", ["code", "name"])
         return territory_attr(code, name)
 
 
@@ -47,9 +47,6 @@ class Media:
         """
         media_attr = namedtuple("media_attr", ["content_type", "mime_type", "width", "height"])
         return media_attr(content_type, mime_type, width, height)
-
-    def __str__(self):
-        pass
 
 
 class Resource:
@@ -98,12 +95,10 @@ class Category:
     def __init__(self, category_id, is_adult, text):
         """
         """
-        self.category_id = category_id
-        self.is_adult = is_adult
-        #self.category_attr = self.__get_category_attr(category_id, is_adult)
+        self.category_attr = self.__get_category_attr(category_id, is_adult)
         self.text = text
 
-    def __get_category_attr(id, is_adult):
+    def __get_category_attr(self, id, is_adult):
         category_attr = namedtuple("category_attr", ["id", "is_adult"])
         return category_attr(id, is_adult)
 

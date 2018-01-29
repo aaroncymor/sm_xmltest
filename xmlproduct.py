@@ -90,6 +90,7 @@ def get_files(file_list):
             file_obj = File(
                     file['@mimeType'],
                     file['@downloadSequence'],
+                    file['@size'],
                     file['name'],
                     file['location']
                 )
@@ -99,6 +100,7 @@ def get_files(file_list):
         file_obj = File(
                 file_list['@mimeType'],
                 file_list['@downloadSequence'],
+                file_list['@size'],
                 file_list['name'],
                 file_list['location']
             )
@@ -173,12 +175,12 @@ def generate_product(product):
         price_class['@name'], 
         price_class['rate'], 
         price_class['currency'],
-        get_territories(territory_list))
+        territory_list)
     
     resource = product['resource']
     media_list = resource['media']
 
-    resource_obj = Resource(resource['@lastModified'], get_medias(media_list))
+    resource_obj = Resource(resource['@lastModified'], media_list)
 
     binary = product['binaries']['binary']
 
@@ -219,6 +221,41 @@ if __name__ == "__main__":
         doc_prod = xmltodict.parse(fd.read())
 
     product = generate_product(doc_prod['product'])
+    territories = product.price_class.territories
+    for territory in territories:
+        print(territory.territory_attr.name)
+        print(territory.territory_attr.code)
+    
+    print(product.price_class.price_class_attr.name)
+
+    medias = product.resource.medias
+    for media in medias:
+        print(media.media_attr.content_type)
+        print(media.media_attr.mime_type)
+        print(media.media_attr.width)
+        print(media.media_attr.height)
+        print(media.location)
+        print(media.name)
+
+    handsets = product.binary.handsets
+    for handset in handsets:
+        print(handset.handset_id)
+        print(handset.make)
+        print(handset.group_id)
+        print(handset.user_agent)
+
+    supported_languages = product.binary.supported_languages
+    for supported_language in supported_languages:
+        print(supported_language.supported_language_attr.code)
+        print(supported_language.supported_language_attr.name)
+
+    files = product.binary.files
+    for file in files:
+        print(file.file_attr.mime_type)
+        print(file.file_attr.download_sequence)
+        print(file.file_attr.size)
+        print(file.name)
+        print(file.location)
 
 
 

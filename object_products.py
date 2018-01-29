@@ -13,20 +13,37 @@ class Territory:
         territory_attr = namedtuple("territory_attr", ["code", "name"])
         return territory_attr(code, name)
 
+    def __str__(self):
+        return self.territory_attr.name
+
 
 class PriceClass:
 
-    def __init__(self, name, rate, currency, territories):
-        self.name = self.__get_price_class_attr(name)
+    def __init__(self, name, rate, currency, territory_list):
+        self.price_class_attr = self.__get_price_class_attr(name)
         self.rate = rate
         self.currency = currency
-        self.territories = territories 
+        self.territories = self.__get_territories(territory_list) 
 
     def __get_price_class_attr(self, name):
         """
         """
         price_class_attr = namedtuple("price_class_attr", ["name"])
         return price_class_attr(name)
+
+    def __get_territories(self, territory_list):
+        territories = []
+        try:            
+            for territory in territory_list:
+                territory_obj = Territory(territory['@code'], territory['@name'])
+                territories.append(territory_obj)
+
+        except TypeError as e:
+            territory_obj = Territory(territory_list['@code'], territory_list['@name'])
+            territories.append(territory_obj)
+
+        return territories
+
 
 
 class Media:
@@ -51,15 +68,59 @@ class Media:
 
 class Resource:
 
-    def __init__(self, last_modified, medias):
+    def __init__(self, last_modified, media_list):
         self.resource_attr = self.__get_resource_attr(last_modified)
-        self.medias = medias
+        self.medias = self.__get_medias(media_list)
 
     def __get_resource_attr(self, last_modified):
         """
         """
         resource_attr = namedtuple("resource_attr", ["last_modified"])
         return resource_attr(last_modified)
+
+    def __get_medias(self, media_list):
+        medias = []
+        try:
+            for media in media_list:
+                media_obj = Media(
+                        media['@contentType'],
+                        media['@mimeType'],
+                        media['@width'],
+                        media['@height'],
+                        media['location'],
+                        media['name']
+                    )
+
+                medias.append(media_obj)
+
+        except TypeError as e:
+            # media_list contains only one element
+
+            media_obj = Media(
+                    media_list['@contentType'],
+                    media_list['@mimeType'],
+                    media_list['@width'],
+                    media_list['@height'],
+                    media_list['location'],
+                    media_list['name']
+                )
+
+            medias.append(media_obj)
+
+        return medias        
+
+
+class Category:
+
+    def __init__(self, category_id, is_adult, text):
+        """
+        """
+        self.category_attr = self.__get_category_attr(category_id, is_adult)
+        self.text = text
+
+    def __get_category_attr(self, id, is_adult):
+        category_attr = namedtuple("category_attr", ["id", "is_adult"])
+        return category_attr(id, is_adult)
 
 
 class Handset:
@@ -70,7 +131,7 @@ class Handset:
                  model,
                  group_id,
                  user_agent):
-        self.handset_id = handset_id
+        self.handset_id = id
         self.make = make
         self.model = model
         self.group_id = group_id
@@ -89,18 +150,6 @@ class Handset:
             self.user_agent
         )
 
-
-class Category:
-
-    def __init__(self, category_id, is_adult, text):
-        """
-        """
-        self.category_attr = self.__get_category_attr(category_id, is_adult)
-        self.text = text
-
-    def __get_category_attr(self, id, is_adult):
-        category_attr = namedtuple("category_attr", ["id", "is_adult"])
-        return category_attr(id, is_adult)
 
 
 class File: 
@@ -131,18 +180,94 @@ class SupportedLanguage:
 
 class Binary:
 
-    def __init__(self, last_modified, id, files, supported_handsets, supported_languages):
+    def __init__(self, last_modified, id, file_list, handset_list, language_list):
 
         self.binary_attr = self.__get_binary_attr(last_modified, id)
-        self.files = files
-        self.supported_languages = supported_languages
-        self.supported_handsets = supported_handsets
+        self.files = self.__get_files(file_list)
+        self.handsets = self.__get_handsets(handset_list)
+        self.supported_languages = self.__get_supported_languages(language_list)
 
     def __get_binary_attr(self, last_modified, id):
         """
         """
         binary_attr = namedtuple("binary_attr", ["last_modified", "id"])
         return binary_attr(last_modified, id)
+
+
+    def __get_files(self, file_list):
+        files = []
+        try:
+            for file in file_list:
+                file_obj = File(
+                        file['@mimeType'],
+                        file['@downloadSequence'],
+                        file['@size'],
+                        file['name'],
+                        file['location']
+                    )
+                files.append(file_obj)
+                        
+        except TypeError as e:
+            file_obj = File(
+                    file_list['@mimeType'],
+                    file_list['@downloadSequence'],
+                    file_list['@size'],
+                    file_list['name'],
+                    file_list['location']
+                )
+
+            files.append(file_obj)
+
+        return files
+
+
+    def __get_handsets(self, handset_list):
+        handsets = []
+        try:
+            # handset_list contains only one element
+            for handset in handset_list:
+                handset_obj = Handset(
+                        handset['id'],
+                        handset['make'],
+                        handset['model'],
+                        handset['groupId'],
+                        handset['useragent']
+                    )
+
+                handsets.append(handset_obj)
+        except TypeError as e:
+            # handset_list contains only one element
+            handset_obj = Handset(
+                handset_list['id'],
+                handset_list['make'],
+                handset_list['model'],
+                handset_list['groupId'],
+                handset_list['useragent']
+            )
+            
+            handsets.append(handset_obj)
+
+        return handsets       
+
+
+    def __get_supported_languages(self, language_list): 
+        supported_languages = []
+        try:
+            for language in language_list:
+                supported_language_obj = SupportedLanguage(
+                        language['@code'],
+                        language['@name']
+                    )
+                supported_languages.append(supported_language_obj)
+        except TypeError as e:
+            supported_language_obj = SupportedLanguage(
+                    language_list['@code'],
+                    language_list['@name']
+                )
+            supported_languages.append(supported_language_obj)
+
+        return supported_languages
+
 
 
 class Product:
@@ -190,6 +315,10 @@ class Product:
         self.asset_type = asset_type
         self.instructions = instructions
         self.publisher = publisher
+        self.copyright1 = copyright1
+        self.copyright2 = copyright2
+        self.price_class = price_class
+        self.resource = resource
         self.binary = binary
 
     def __get_product_attr(

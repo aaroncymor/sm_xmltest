@@ -1,2 +1,7 @@
 myvenv
 __pycache__
+backup.py
+done.txt
+names.csv
+generate_csv.py
+files/

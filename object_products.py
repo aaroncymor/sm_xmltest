@@ -1,5 +1,65 @@
 from collections import namedtuple
 
+def generate_product(product):
+
+    description_language = product['descriptionLanguage']
+    
+    category = product['category']
+    category_obj = Category(category['@id'], category['@isAdult'], category['#text'])
+
+    price_class = product['pricing']['priceClass']
+
+    territory_list = price_class['licencedTerritories']['territory']
+
+    price_class_obj = PriceClass(
+        price_class['@name'], 
+        price_class['rate'], 
+        price_class['currency'],
+        territory_list)    
+
+    resource = product['resource']
+    media_list = resource['media']
+
+    resource_obj = Resource(resource['@lastModified'], media_list)
+
+    binary = product['binaries']['binary']
+
+    if isinstance(binary, list):
+        file_list = binary[1]['files']['file']
+        handset_list = binary[1]['supportedHandsets']['handset']
+        supported_language_list = binary[1]['supportedLanguages']['language']
+        binary_obj = Binary(binary[0]['@lastModified'], binary[0]['@id'], file_list, handset_list, supported_language_list)  
+    elif isinstance(binary, dict):
+        file_list = binary['files']['file']
+        handset_list = binary['supportedHandsets']['handset']
+        supported_language_list = binary['supportedLanguages']['language']
+        binary_obj = Binary(binary['@lastModified'], binary['@id'], file_list, handset_list, supported_language_list) 
+
+    product = Product(
+            product['@productCode'],
+            product['@productName'],
+            product['@lastModified'],
+            product['@xsi:schemaLocation'],
+            product['@xmlns:xsi'],
+            description_language['@code'],
+            description_language['@name'],
+            product['title'],
+            product['shortDescription'],
+            product['longDescription'],
+            product['smsDescription'],
+            category_obj,
+            product['assetType'],
+            product['instructions'],
+            product['objectiveDescription'],
+            product['publisher'],
+            product['copyright1'],
+            product['copyright2'],
+            price_class_obj,
+            resource_obj,
+            binary_obj
+        )
+
+    return product
 
 class Territory:
 
@@ -288,6 +348,7 @@ class Product:
             category, #category class
             asset_type,
             instructions,
+            objective_description,
             publisher,
             copyright1,
             copyright2,
@@ -314,6 +375,7 @@ class Product:
         self.category = category
         self.asset_type = asset_type
         self.instructions = instructions
+        self.objective_description = objective_description
         self.publisher = publisher
         self.copyright1 = copyright1
         self.copyright2 = copyright2

@@ -7,8 +7,134 @@ if __name__ == "__main__":
 #    doc_prod = xml_by_url(url)
 #    product = generate_product(doc_prod['product'])
 
-    codes = [
-        #'29237', //NO BINARY TAG
+    codes = 
+        #'29237', NO APK FILE
+        #'29306', NO APK FILE
+        #'9521', No XML or Product Expired
+        #'9530', No XML or Product Expired
+        #'9532', No XML or Product Expired
+        '7703',
+        '7117',
+        '6865',
+        '10399',
+        '9367',
+        '8927',
+        '7052',
+        '9686',
+        '10159',
+        '10186',
+        '9124',
+        '22412',
+        '29308',
+        '29318',
+        '10838',
+        '10827',
+        '24215',
+        '10985',
+        '29272',
+        '23107',
+        '29240',
+        '10431',
+        '24902',
+        '9397',
+        '9852',
+        '23650',
+        '29138',
+        '7808',
+        '11700',
+        '29146',
+        '28158',
+        '10013',
+        '28600',
+        '27430',
+        '29268',
+        '29141',
+        '29158',
+        '10619',
+        '20180',
+        '23630',
+        '10029',
+        '8483',
+        '6078',
+        '29014',
+        '21855',
+        '26012',
+        '20705',
+        '10439',
+        '21799',
+        '8956',
+        '29182',
+        '29196',
+        '8068',
+        '8065',
+        '9195',
+        '29132',
+        '27852',
+        '8986',
+        '25295',
+        '8224',
+        '25822',
+        '27771',
+        '29143',
+        '10621',
+        '9026',
+        '9743',
+        '11010',
+        '10835',
+        '22556',
+        '29186',
+        '28031',
+        '28491',
+        '8985',
+        '22031',
+        '9796',
+        '23215',
+        '10558',
+        '8889',
+        '29112',
+        '10926',
+        '29322',
+        '27218',
+        '28879',
+        '9935',
+        '7250',
+        '27138',
+        '7661',
+        '10299',
+        '28590',
+        '23632',
+        '29168',
+        '26017',
+        '11133',
+        '22089',
+        '25176',
+        '27747',
+        '10214',
+        '23080',
+        '28997',
+        '29192',
+        '22967',
+        '29194',
+        '27959',
+        '28736',
+        '24530',
+        '10102',
+        '27986',
+        '22777',
+        '28201',
+        '29134',
+        '27886',
+        '9860',
+        '9546',
+        '9547',
+        '24324',
+        '8000',
+        '29305',
+        '27421',
+        '28671',
+        '9548',
+        '8976',
+        '10829',
         '29151',
         '9139',
         '28967',
@@ -63,7 +189,6 @@ if __name__ == "__main__":
         '28222',
         '29320',
         '26542',
-        '29306',
         '28989',
         '20703',
         '10780',
@@ -215,12 +340,12 @@ if __name__ == "__main__":
         '9458',
     ]
 
-#    for code in codes:
-#        url = 'http://cmserver.spoiledmilk.com/ContentManagement/xmlFeed?action=88&productCode=' + code
-#        doc_prod = xml_by_url(url)
-#        product = generate_product(doc_prod['product'])
-#        print("READ XML SUCCESSFUL")
-
+    for code in codes:
+        url = 'http://cmserver.spoiledmilk.com/ContentManagement/xmlFeed?action=88&productCode=' + code
+        doc_prod = xml_by_url(url)
+        product = generate_product(doc_prod['product'])
+        print("READ XML SUCCESSFUL")
+##       DOWNLOADING FILES
 #        files = product.binary.files
 #        for file in files:
 #            print("Start!")
@@ -234,176 +359,175 @@ if __name__ == "__main__":
 #            print("===========================")
 #            time.sleep(5)
 
-#    url = 'http://cmserver.spoiledmilk.com/ContentManagement/xmlFeed?action=88&productCode=29151'
-#    doc_prod = xml_by_url(url)
-    with open('example_product2.xml') as fd:
-        doc_prod = xmltodict.parse(fd.read())    
+#    with open('example_product2.xml') as fd:
+#        doc_prod = xmltodict.parse(fd.read())    
     
-    product = generate_product(doc_prod['product'])
+        #product = generate_product(doc_prod['product'])
 
-    single_fieldnames = [
-        'product_code', 
-        'product_name', 
-        'last_modified', 
-        'xsi_schema_location', 
-        'xmlns_xsi',
-        'description_language_code',
-        'description_language_name',
-        'title',
-        'short_description',
-        'long_description',
-        'sms_description',
-        'category_id',
-        'category_is_adult',
-        'category_text',
-        'asset_type',
-        'instructions',
-        'objective_description',
-        'publisher',
-        'copyright1',
-        'copyright2',
-        'price_class_name',
-        'price_class_rate',
-        'price_class_currency',
-        'resource_last_modified',
-    ]
+        single_fieldnames = [
+            'product_code', 
+            'product_name', 
+            'last_modified', 
+            'xsi_schema_location', 
+            'xmlns_xsi',
+            'description_language_code',
+            'description_language_name',
+            'title',
+            'short_description',
+            'long_description',
+            'sms_description',
+            'category_id',
+            'category_is_adult',
+            'category_text',
+            'asset_type',
+            'instructions',
+            'objective_description',
+            'publisher',
+            'copyright1',
+            'copyright2',
+            'price_class_name',
+            'price_class_rate',
+            'price_class_currency',
+            'resource_last_modified',
+        ]
 
-    #print(single_fieldnames)
+        #print(single_fieldnames)
 
-    single_row = {
-        'product_code': product.product_attr.product_code, 
-        'product_name': product.product_attr.product_name, 
-        'last_modified': product.product_attr.last_modified, 
-        'xsi_schema_location': product.product_attr.xsi_schema_location, 
-        'xmlns_xsi': product.product_attr.xmlns_xsi,
-        'description_language_code': product.description_language_attr.code,
-        'description_language_name': product.description_language_attr.name,
-        'title': product.title,
-        'short_description': product.short_description,
-        'long_description': product.long_description,
-        'sms_description': product.sms_description,
-        'category_id': product.category.category_attr.id ,
-        'category_is_adult': product.category.category_attr.is_adult,
-        'category_text': product.category.text,
-        'asset_type': product.asset_type,
-        'instructions': product.instructions,
-        'objective_description': product.objective_description,
-        'publisher': product.publisher,
-        'copyright1': product.copyright1,
-        'copyright2': product.copyright2,
-        'price_class_name': product.price_class.price_class_attr.name,
-        'price_class_rate': product.price_class.rate,
-        'price_class_currency': product.price_class.currency,
-        'resource_last_modified': product.resource.resource_attr.last_modified,
-    }
+        single_row = {
+            'product_code': product.product_attr.product_code, 
+            'product_name': product.product_attr.product_name, 
+            'last_modified': product.product_attr.last_modified, 
+            'xsi_schema_location': product.product_attr.xsi_schema_location, 
+            'xmlns_xsi': product.product_attr.xmlns_xsi,
+            'description_language_code': product.description_language_attr.code,
+            'description_language_name': product.description_language_attr.name,
+            'title': product.title,
+            'short_description': product.short_description,
+            'long_description': product.long_description,
+            'sms_description': product.sms_description,
+            'category_id': product.category.category_attr.id ,
+            'category_is_adult': product.category.category_attr.is_adult,
+            'category_text': product.category.text,
+            'asset_type': product.asset_type,
+            'instructions': product.instructions,
+            'objective_description': product.objective_description,
+            'publisher': product.publisher,
+            'copyright1': product.copyright1,
+            'copyright2': product.copyright2,
+            'price_class_name': product.price_class.price_class_attr.name,
+            'price_class_rate': product.price_class.rate,
+            'price_class_currency': product.price_class.currency,
+            'resource_last_modified': product.resource.resource_attr.last_modified,
+        }
 
-    #print(single_row)
-    single_row_list = [single_row]
-    #print(single_row_list)
+        #print(single_row)
+        single_row_list = [single_row]
+        #print(single_row_list)
 
-    territory_fieldnames = [
-        'territory_code',
-        'territory_name'
-    ]
+        territory_fieldnames = [
+            'territory_code',
+            'territory_name'
+        ]
 
-    territory_row_list = []
-    territories = product.price_class.territories
-    for territory in territories:
-        territory_row = {}
-        territory_row['territory_name'] = territory.territory_attr.name
-        territory_row['territory_code'] = territory.territory_attr.code
-        territory_row_list.append(territory_row)
+        territory_row_list = []
+        territories = product.price_class.territories
+        for territory in territories:
+            territory_row = {}
+            territory_row['territory_name'] = territory.territory_attr.name
+            territory_row['territory_code'] = territory.territory_attr.code
+            territory_row_list.append(territory_row)
 
-    #print(territory_row_list)
+        #print(territory_row_list)
 
-    media_fieldnames = [
-        'media_content_type',
-        'media_mime_type',
-        'media_width',
-        'media_height',
-        'media_name',
-        'media_location'
-    ]  
+        media_fieldnames = [
+            'media_content_type',
+            'media_mime_type',
+            'media_width',
+            'media_height',
+            'media_name',
+            'media_location'
+        ]  
 
-    media_row_list = []
-    medias = product.resource.medias
-    for media in medias:
-        media_row = {}
-        media_row['media_content_type'] = media.media_attr.content_type
-        media_row['media_mime_type'] = media.media_attr.mime_type
-        media_row['media_width'] = media.media_attr.width
-        media_row['media_height'] = media.media_attr.height
-        media_row['media_location'] = media.location # Download image here
-        media_row['media_name'] = media.name
-        #download_image(media, 'files/{}/images/'.format(product.title))
-        media_row_list.append(media_row)
-        #time.sleep(5)
+        media_row_list = []
+        medias = product.resource.medias
+        for media in medias:
+            media_row = {}
+            media_row['media_content_type'] = media.media_attr.content_type
+            media_row['media_mime_type'] = media.media_attr.mime_type
+            media_row['media_width'] = media.media_attr.width
+            media_row['media_height'] = media.media_attr.height
+            media_row['media_location'] = media.location # Download image here
+            media_row['media_name'] = media.name
+            #download_image(media, 'files/{}/images/'.format(product.title))
+            media_row_list.append(media_row)
+            #time.sleep(5)
 
-    #print(media_row_list)
+        #print(media_row_list)
 
-    file_fieldnames = [
-        'file_mime_type',
-        'file_download_sequence',
-        'file_size',
-        'file_name',
-        'file_location'
-    ]
+        file_fieldnames = [
+            'file_mime_type',
+            'file_download_sequence',
+            'file_size',
+            'file_name',
+            'file_location'
+        ]
 
-    file_row_list = []
-    files = product.binary.files
-    for file in files:
-        file_row = {}
-        file_row['file_mime_type'] = file.file_attr.mime_type
-        file_row['file_download_sequence'] = file.file_attr.download_sequence
-        file_row['file_size'] = file.file_attr.size
-        file_row['file_name'] = file.name
-        file_row['file_location'] = file.location # Download apk here
-        #download_apk(file,files/{}/apk/'.format(product.title))
-        file_row_list.append(file_row)
-        #download_apk(file, 'files/apk/')
-        #time.sleep(5)
+        file_row_list = []
+        files = product.binary.files
+        for file in files:
+            file_row = {}
+            file_row['file_mime_type'] = file.file_attr.mime_type
+            file_row['file_download_sequence'] = file.file_attr.download_sequence
+            file_row['file_size'] = file.file_attr.size
+            file_row['file_name'] = file.name
+            file_row['file_location'] = file.location # Download apk here
+            #download_apk(file,files/{}/apk/'.format(product.title))
+            file_row_list.append(file_row)
+            #download_apk(file, 'files/apk/')
+            #time.sleep(5)
 
-    #print(file_row_list)
+        #print(file_row_list)
 
-    handset_fieldnames = [
-        'handset_id',
-        'handset_make',
-        'handset_model',
-        'handset_groupid',
-        'handset_useragent'
-    ]
+        handset_fieldnames = [
+            'handset_id',
+            'handset_make',
+            'handset_model',
+            'handset_groupid',
+            'handset_useragent'
+        ]
 
-    handset_row_list = []
-    handsets = product.binary.handsets
-    for handset in handsets:
-        handset_row = {}
-        handset_row['handset_id'] = handset.handset_id
-        handset_row['handset_make'] = handset.make
-        handset_row['handset_model'] = handset.model
-        handset_row['handset_groupid'] = handset.group_id
-        handset_row['handset_useragent'] = handset.user_agent
-        handset_row_list.append(handset_row)
+        handset_row_list = []
+        handsets = product.binary.handsets
+        for handset in handsets:
+            handset_row = {}
+            handset_row['handset_id'] = handset.handset_id
+            handset_row['handset_make'] = handset.make
+            handset_row['handset_model'] = handset.model
+            handset_row['handset_groupid'] = handset.group_id
+            handset_row['handset_useragent'] = handset.user_agent
+            handset_row_list.append(handset_row)
 
-    #print(handset_row_list)
+        #print(handset_row_list)
 
-    supported_language_fieldnames = [
-        'supported_language_name',
-        'supported_language_code'
-    ]
+        supported_language_fieldnames = [
+            'supported_language_name',
+            'supported_language_code'
+        ]
 
-    supported_language_row_list = []
-    supported_languages = product.binary.supported_languages
-    for supported_language in supported_languages:
-        supported_language_row = {}
-        supported_language_row['supported_language_code'] = supported_language.supported_language_attr.code
-        supported_language_row['supported_language_name'] = supported_language.supported_language_attr.name
-        supported_language_row_list.append(supported_language_row)
+        supported_language_row_list = []
+        supported_languages = product.binary.supported_languages
+        for supported_language in supported_languages:
+            supported_language_row = {}
+            supported_language_row['supported_language_code'] = supported_language.supported_language_attr.code
+            supported_language_row['supported_language_name'] = supported_language.supported_language_attr.name
+            supported_language_row_list.append(supported_language_row)
 
-    #print(supported_language_row_list)
-
-    generate_csv('files/csv/', product.title, single_fieldnames, single_row_list)
-    #generate_csv('files/csv/', product.title, territory_fieldnames, territory_row_list)
-    #generate_csv('files/csv/', product.title, media_fieldnames, media_row_list)
-    #generate_csv('files/csv/', product.title, file_fieldnames, file_row_list)
-    #generate_csv('files/csv/', product.title, handset_fieldnames, handset_row_list)
-    #generate_csv('files/csv/', product.title, supported_language_fieldnames, supported_language_row_list)
+        #print(supported_language_row_list)
+        print("Generating CSV for {}".format(product.title))
+        generate_csv('files/csv/', product.title, single_fieldnames, single_row_list)
+        generate_csv('files/csv/', product.title, territory_fieldnames, territory_row_list)
+        generate_csv('files/csv/', product.title, media_fieldnames, media_row_list)
+        generate_csv('files/csv/', product.title, file_fieldnames, file_row_list)
+        generate_csv('files/csv/', product.title, handset_fieldnames, handset_row_list)
+        generate_csv('files/csv/', product.title, supported_language_fieldnames, supported_language_row_list)
+        print("==================================================")

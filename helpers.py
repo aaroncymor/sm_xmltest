@@ -45,14 +45,12 @@ def generate_csv(directory, file_name, fieldnames, dictionary_list):
 
     destination = directory + file_name
 
-    #print(fieldnames)
-    #print(dictionary_list)
-
     if not os.path.exists(destination):
-        with open(destination + '.csv', 'w') as csvfile:
+        with open(destination + '.csv', 'a') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()
             for dictionary in dictionary_list:
-                for item in dictionary:
-                    writer.writerow(item)
+                writer.writerow(dictionary)
+    else:
+        print("CSV File:{} already exists!".format(destination))

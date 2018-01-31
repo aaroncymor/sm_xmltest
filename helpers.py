@@ -39,21 +39,17 @@ def download_image(media, directory):
     else:
         print("Image {} - already exists".format(destination))
 
-def generate_csv1(directory, fieldnames_list, dictionary_list):
+def generate_csv(directory, file_name, fieldnames, dictionary_list):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
-    with open(filename + '.csv', 'w') as csvfile:
-        for fieldnames in fieldnames_list:
-            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+    destination = directory + file_name
 
-            writer.writeheader()
-            for dictionary in dictionary_list:
-                for item in dictionary:
-                    writer.writerow(item)
+    #print(fieldnames)
+    #print(dictionary_list)
 
-def generate_csv2(directory, fieldnames_list, dictionary_list):
-
-    with open(filename + '.csv', 'w') as csvfile:
-        for fieldnames in fieldnames_list:
+    if not os.path.exists(destination):
+        with open(destination + '.csv', 'w') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
 
             writer.writeheader()

@@ -1,6 +1,6 @@
 import xmltodict, time
 from object_products import (generate_product, Territory, PriceClass, Media, Resource, Handset, Category, File, Binary, SupportedLanguage, Product)
-from helpers import xml_by_url, download_apk, download_image
+from helpers import xml_by_url, download_apk, download_image, generate_csv
 
 if __name__ == "__main__":
 #    url = 'http://cmserver.spoiledmilk.com/ContentManagement/xmlFeed?action=88&productCode=9082'
@@ -215,37 +215,40 @@ if __name__ == "__main__":
         '9458',
     ]
 
-    for code in codes:
-        url = 'http://cmserver.spoiledmilk.com/ContentManagement/xmlFeed?action=88&productCode=' + code
-        doc_prod = xml_by_url(url)
-        product = generate_product(doc_prod['product'])
-        print("READ XML SUCCESSFUL")
+#    for code in codes:
+#        url = 'http://cmserver.spoiledmilk.com/ContentManagement/xmlFeed?action=88&productCode=' + code
+#        doc_prod = xml_by_url(url)
+#        product = generate_product(doc_prod['product'])
+#        print("READ XML SUCCESSFUL")
 
-        files = product.binary.files
-        for file in files:
-            print("Start!")
-            print(file.file_attr.mime_type)
-            print(file.file_attr.download_sequence)
-            print(file.file_attr.size)
-            print(file.name)
-            print(file.location) # Download apk here
-            download_apk(file, 'files/apk/')
-            print("Wait 5 secs")
-            print("===========================")
-            time.sleep(5)
+#        files = product.binary.files
+#        for file in files:
+#            print("Start!")
+#            print(file.file_attr.mime_type)
+#            print(file.file_attr.download_sequence)
+#            print(file.file_attr.size)
+#            print(file.name)
+#            print(file.location) # Download apk here
+#            download_apk(file, 'files/apk/')
+#            print("Wait 5 secs")
+#            print("===========================")
+#            time.sleep(5)
 
-"""
+#    url = 'http://cmserver.spoiledmilk.com/ContentManagement/xmlFeed?action=88&productCode=29151'
+#    doc_prod = xml_by_url(url)
+    with open('example_product2.xml') as fd:
+        doc_prod = xmltodict.parse(fd.read())    
+    
+    product = generate_product(doc_prod['product'])
+
     single_fieldnames = [
         'product_code', 
         'product_name', 
         'last_modified', 
         'xsi_schema_location', 
         'xmlns_xsi',
-        'description_language',
         'description_language_code',
         'description_language_name',
-        'title',
-        'short_description',
         'title',
         'short_description',
         'long_description',
@@ -264,6 +267,8 @@ if __name__ == "__main__":
         'price_class_currency',
         'resource_last_modified',
     ]
+
+    #print(single_fieldnames)
 
     single_row = {
         'product_code': product.product_attr.product_code, 
@@ -292,7 +297,9 @@ if __name__ == "__main__":
         'resource_last_modified': product.resource.resource_attr.last_modified,
     }
 
-    print(single_row)
+    #print(single_row)
+    single_row_list = [single_row]
+    #print(single_row_list)
 
     territory_fieldnames = [
         'territory_code',
@@ -307,7 +314,7 @@ if __name__ == "__main__":
         territory_row['territory_code'] = territory.territory_attr.code
         territory_row_list.append(territory_row)
 
-    print(territory_row_list)
+    #print(territory_row_list)
 
     media_fieldnames = [
         'media_content_type',
@@ -332,7 +339,7 @@ if __name__ == "__main__":
         media_row_list.append(media_row)
         #time.sleep(5)
 
-    print(media_row_list)
+    #print(media_row_list)
 
     file_fieldnames = [
         'file_mime_type',
@@ -356,7 +363,7 @@ if __name__ == "__main__":
         #download_apk(file, 'files/apk/')
         #time.sleep(5)
 
-    print(file_row_list)
+    #print(file_row_list)
 
     handset_fieldnames = [
         'handset_id',
@@ -372,11 +379,12 @@ if __name__ == "__main__":
         handset_row = {}
         handset_row['handset_id'] = handset.handset_id
         handset_row['handset_make'] = handset.make
-        handset_row['handset_model'] = handset.group_id
+        handset_row['handset_model'] = handset.model
+        handset_row['handset_groupid'] = handset.group_id
         handset_row['handset_useragent'] = handset.user_agent
         handset_row_list.append(handset_row)
 
-    print(handset_row_list)
+    #print(handset_row_list)
 
     supported_language_fieldnames = [
         'supported_language_name',
@@ -391,5 +399,11 @@ if __name__ == "__main__":
         supported_language_row['supported_language_name'] = supported_language.supported_language_attr.name
         supported_language_row_list.append(supported_language_row)
 
-    print(supported_language_row_list)
-"""
+    #print(supported_language_row_list)
+
+    generate_csv('files/csv/', product.title, single_fieldnames, single_row_list)
+    #generate_csv('files/csv/', product.title, territory_fieldnames, territory_row_list)
+    #generate_csv('files/csv/', product.title, media_fieldnames, media_row_list)
+    #generate_csv('files/csv/', product.title, file_fieldnames, file_row_list)
+    #generate_csv('files/csv/', product.title, handset_fieldnames, handset_row_list)
+    #generate_csv('files/csv/', product.title, supported_language_fieldnames, supported_language_row_list)
